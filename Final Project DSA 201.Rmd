@@ -1,0 +1,134 @@
+---
+title: "Panic Attacks: Final Project"
+output: html_notebook
+---
+Psychiatrists have been researching panic attacks and want to know more about them, why they happen and what are ways to fix them. Panic attacks are “a sudden episode of intense fear that triggers severe physical reactions when there is no real danger or apparent cause.” (“Panic Attacks and Panic Disorder - Symptoms and Causes”) These panic attacks can be disruptive to one's life and affect what they do and how they live. Psychiatrists are finding ways that allow them to know what triggers them and the best ways to calm them down so that they can develop new therapy methods to use on patients. Through random sampling psychiatrists have developed a list of patients who have experienced panic attacks and got an array of data with information about symptoms, triggers, coping mechanisms, etc.
+
+```{r}
+url <- "C:/Users/siena/OneDrive/Desktop/Panic disorder.csv"
+Panic <- read.csv(url)
+```
+
+
+What is the most common trigger for panic attacks?
+
+```{r}
+word_counts <- table(Panic_disorder$`Psychiatric History`)
+
+most_common_word <- names(sort(word_counts, decreasing = TRUE))[1]
+
+print(most_common_word)
+
+word_counts <- table(Panic_disorder$`Psychiatric History`)
+
+print(word_counts)
+
+```
+
+*Through all of the patients the most common psychiatric history experienced is Anxiety disorder. This is predicted to be the most common as Panic Attacks are a stressor of fear which is also what anxiety is therefor those with anxiety also have to deal with the same symptoms of those who have panic attacks.*
+
+
+What are the most common symptoms when it comes to panic attacks?
+
+```{r}
+word_counts <- table(Panic_disorder$ Symptoms )
+
+most_common_word <- names(sort(word_counts, decreasing = TRUE))[1]
+
+print(most_common_word)
+
+word_counts <- table(Panic_disorder$Symptoms)
+
+print(word_counts)
+```
+
+*Shortness of breath is the most common symptoms when it comes to panic attacks. This is often due to the increased heart rate causing hyperventilation. This is a common symptom among people as it is a involuntary reaction that the body has and the cause of panic causes people to have shortness of breath. The data in the column that shows the most common symptoms and the ones that repeat the most points out what psychologists are looking for which is the most common reoccurring symptom which is shortness of breath.*
+
+
+
+What are the best coping mechanisms to help with panic attacks?
+
+```{r}
+library(ggplot2)
+
+word_panic_disorder <- as.data.frame(table(Panic_disorder$`Coping Mechanisms`))
+colnames(word_panic_disorder) <- c("Word", "Count")
+
+ggplot(word_panic_disorder, aes(x = reorder(Word, -Count), y = Count)) +
+  geom_bar(stat = "identity", fill = "forestgreen") +
+  labs(title = "Word Frequency", x = "Coping Mechanisms", y = "Amound of Times Recorded") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+*As we can see from the bar graph Medication is the most sought after coping mechanism. This would make sense as the most common symptom as seen in question 2 is shortness of breath. Meditation really focuses on breathing and slow breathing while listening to your body needs. The second most common coping mechanism which as we can see from the graph is not far off from the most common coping mechanism is seeking therapy which is sometimes a necessity to get an experts opinion and finding other methods to help with panic attacks.*
+
+What is the relevance of gender have to do with the severity of panic attacks and why is this?
+
+```{r}
+max(Panic_disorder$Age)
+
+list(Panic_disorder$Severity)
+
+word_counts <- table(Panic_disorder$Severity)
+
+print(word_counts)
+
+slices <- c(16, 9, 11)
+labels <- c("Mild", "Moderate", "Severe")
+
+pct <- round(slices / sum(slices) * 100)
+labels_with_pct <- paste(labels, pct, "%")
+
+pie(slices, labels = labels_with_pct, main = "Female Panic Attack Severity", col = rainbow(length(slices)))
+
+
+slices <- c(11, 14, 22)
+labels <- c("Mild", "Moderate", "Severe")
+
+pct <- round(slices / sum(slices) * 100)
+labels_with_pct <- paste(labels, pct, "%")
+
+pie(slices, labels = labels_with_pct, main = "Male Panic Attack Severity", col = rainbow(length(slices)))
+
+```
+
+*As we can see from the two pie charts on average males experience more severe panic attacks while Females experience more mild panic attacks. While some could argue that this result was a little bit skewed because there where 11 more males researched than females in the study. Based off of the percentages to allow for a more unbiased study by doing it through percentages.*
+
+
+When seeing if a patient has experienced panic attacks, how has substance abuse correlated to panic attacks and severity? 
+
+```{r}
+
+word_counts <- table(Panic_disorder$`Personal History`)
+print(word_counts)
+
+library(ggplot2)
+
+word_panic_disorder <- as.data.frame(table(Panic_disorder$`Personal History`))
+colnames(word_panic_disorder) <- c("Word", "Count")
+
+ggplot(word_panic_disorder, aes(x = reorder(Word, -Count), y = Count)) +
+  geom_bar(stat = "identity", fill = "purple") +
+  labs(title = "Word Frequency", x = "Exsperienced Panic Attacks", y = "Count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+library(ggplot2)
+
+word_panic_disorder <- as.data.frame(table(Panic_disorder$`Substance Use`))
+colnames(word_panic_disorder) <- c("Word", "Count")
+
+ggplot(word_panic_disorder, aes(x = reorder(Word, -Count), y = Count)) +
+  geom_bar(stat = "identity", fill = "yellow") +
+  labs(title = "Word Frequency", x = "Substance Used", y = "Count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
+
+*As we can see most people do not use substances but as seen in the graph from question 4 substances can lead to more severe panic attacks. In the two charts that the program is displaying more people do not experience panic attacks but those who do can often risk having a more moderate or sever panic attack. Some may think that the substances will help lower there panic attack usage but it will often make them worse.*
+
+
